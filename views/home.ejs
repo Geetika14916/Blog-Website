@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <title>HomePage</title>
+    <style>
+      .card-text {
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* Show 3 lines max */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: normal;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
+    <div class="container mt-3">
+      <div class="row g-3">
+        <!-- Add a row to contain the cards -->
+        <% blogs.forEach(blog => { %>
+        <div class="col-md-4 col-sm-6">
+          <!-- Responsive column -->
+          <div class="card h-100" style="width: 100%">
+            <!-- 100% width for each column -->
+            <img
+              src="<%= blog.coverImgUrl %>"
+              class="card-img-top"
+              alt="..."
+              style="height: 200px; object-fit: cover"
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%= blog.title %></h5>
+              <p class="card-text"><%= blog.body %></p>
+              <a href="/blogs/<%= blog._id %>" class="btn btn-primary">View</a>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+    <%- include('./partials/scripts') %>
+  </body>
+</html>
