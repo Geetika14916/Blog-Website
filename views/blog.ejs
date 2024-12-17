@@ -3,6 +3,57 @@
   <head>
     <%- include('./partials/head') %>
     <title>Blog</title>
+    <style>
+      /* Styling for the comment container */
+      .comment-container {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 15px;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid #007bff;
+      }
+
+      /* User Profile Image */
+      .user-profile {
+        margin-right: 10px;
+      }
+
+      .user-img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      /* Comment content section */
+      .comment-content {
+        max-width: 90%;
+      }
+
+      /* User name styling */
+      .user-name {
+        font-weight: bold;
+        font-size: 1em;
+        color: #333;
+        margin-bottom: 5px;
+      }
+
+      /* Comment text styling */
+      .comment-text {
+        font-size: 1em;
+        color: #555;
+      }
+
+      /* Ensure consistent line breaks and word wrapping */
+      .comment-text pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        margin: 0;
+      }
+    </style>
   </head>
   <body>
     <%- include('./partials/nav') %>
@@ -13,13 +64,45 @@
     </div>
 
     <div class="container mt-3">
-      <img
-        src="<%= blog.createdBy.profileImgUrl %>"
-        alt="Profile Image"
-        width="50px"
-      />
+      <img src="<%= blog.createdBy.profileImgUrl %>" width="50px" />
 
       <%= blog.createdBy.fullName %>
+    </div>
+
+    <% if (locals.user) { %>
+    <div class="container mt-5">
+      <h1>Comments (<%=comments.length %>)</h1>
+      <form action="/blogs/comment/<%=blog._id%>" method="post">
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter your comment"
+            name="content"
+            aria-describedby="content"
+          />
+          <button type="submit" class="btn btn-primary mt-1">Add</button>
+        </div>
+      </form>
+    </div>
+
+    <% } %>
+
+    <div class="container mt-3">
+      <% comments.forEach(comment => { %>
+      <div class="comment-container">
+        <!-- User Profile Image -->
+        <div class="user-profile">
+          <img src="<%= blog.createdBy.profileImgUrl %>" class="user-img" />
+        </div>
+
+        <!-- User Name and Comment -->
+        <div class="comment-content">
+          <p class="user-name">@<%= comment.createdBy.fullName %></p>
+          <pre class="comment-text"><%= comment.content %></pre>
+        </div>
+      </div>
+      <% }) %>
     </div>
     <%- include('./partials/scripts') %>
   </body>
